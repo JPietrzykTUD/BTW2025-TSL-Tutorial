@@ -1,0 +1,11 @@
+{
+    "name": "TSL Tutorial - BTW 2025",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "..",
+        "args": {
+            "VARIANT": "node"
+        }
+    },
+    "postCreateCommand": "echo 'Setup Complete.'"
+}
