@@ -1,11 +1,21 @@
 {
     "name": "TSL Tutorial - BTW 2025",
     "build": {
-        "dockerfile": "Dockerfile",
-        "context": "..",
-        "args": {
-            "VARIANT": "node"
-        }
+        "dockerfile": "Dockerfile"
     },
-    "postCreateCommand": "echo 'Setup Complete.'"
+    "remoteUser": "dev",
+    "features": {
+      "ghcr.io/devcontainers/features/common-utils:2.5.2": {}
+    },
+    "postCreateCommand": "echo 'Setup Complete.'",
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-vscode.cpptools",
+          "ms-python.python",
+          "ms-azuretools.vscode-docker",
+        ]
+      }
+    }
+
 }

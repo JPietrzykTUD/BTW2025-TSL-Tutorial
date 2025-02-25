@@ -1,6 +1,27 @@
-FROM mcr.microsoft.com/devcontainers/base:ubuntu
+FROM archlinux:latest
 
-RUN apt-get update && apt-get install -y \
-    curl vim htop \
-    python3 python3-pip python3-venv \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN pacman --noconfirm -Syu && \
+    pacman --noconfirm -S git base-devel go vim sudo bash-completion && \
+    rm /var/cache/pacman/pkg/*
+
+# Create a non-root user for using yay safely
+RUN useradd -m -s /bin/bash dev && \
+    echo "dev ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Switch to the new user
+USER dev
+WORKDIR /home/dev
+
+# Install yay
+RUN git clone https://aur.archlinux.org/yay-bin.git /home/dev/yay-bin && \
+    cd /home/dev/yay-bin && \
+    makepkg -si --noconfirm && \
+    rm -rf /home/dev/yay-bin
+
+# Set PATH (optional, but ensures yay is found)
+ENV PATH="/home/dev/.local/bin:$PATH"
+
+# Install an AUR package globally
+RUN yay -Sy --noconfirm intel-sde
+
+WORKDIR /home/dev/
