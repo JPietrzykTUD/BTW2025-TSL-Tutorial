@@ -15,6 +15,6 @@
         ]
       }
     },
-    "postStartCommand": "/bin/bash ls && ./setup_hooks.sh"
+    "postStartCommand": "/bin/bash ./setup_hooks.sh"
 
 }
