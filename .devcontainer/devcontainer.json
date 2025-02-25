@@ -11,10 +11,18 @@
           "ms-vscode.cpptools",
           "ms-python.python",
           "ms-azuretools.vscode-docker",
+          "microsoft.simple-browser",
           "DBTUD.tslgen-edit"
+        ],
+        "keybindings": [
+          {
+            "key": "ctrl+shift+o",
+            "command": "simpleBrowser.show",
+            "args": ["https://db-tu-dresden.github.io/TSL/"]
+          }
         ]
       }
     },
     "postStartCommand": "/bin/bash ./scripts/setup_hooks.sh && sudo /bin/bash ./scripts/setup_tsl.sh",
-    "postAttachCommand": "code tslgen/primitive_data/primitives/calc.yaml"
+    "postAttachCommand": "code 3rdparty/tslgen/primitive_data/primitives/calc.yaml"
 }
