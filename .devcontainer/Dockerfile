@@ -4,7 +4,8 @@ RUN pacman --noconfirm -Syu && \
     pacman --noconfirm -S \
     git base-devel go \
     vim sudo bash-completion \
-    wget curl zsh && \
+    wget curl zsh \
+    github-cli && \
     rm /var/cache/pacman/pkg/*
 
 # Create a non-root user for using yay safely
