@@ -15,7 +15,7 @@ RUN pacman --noconfirm -Syu && \
 
 # Create a non-root user for using yay safely
 RUN useradd -m -s /bin/bash dev && \
-    echo "dev ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    echo 'dev ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/dev
 
 # Switch to the new user
 USER dev
