@@ -4,16 +4,13 @@
         "dockerfile": "Dockerfile"
     },
     "remoteUser": "dev",
-    "features": {
-      "ghcr.io/devcontainers/features/common-utils:2.5.2": {}
-    },
     "postCreateCommand": "echo 'Setup Complete.'",
     "customizations": {
       "vscode": {
         "extensions": [
           "ms-vscode.cpptools",
           "ms-python.python",
-          "ms-azuretools.vscode-docker",
+          "ms-azuretools.vscode-docker"
         ]
       }
     }

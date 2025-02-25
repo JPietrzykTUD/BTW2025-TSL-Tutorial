@@ -1,7 +1,10 @@
 FROM archlinux:latest
 
 RUN pacman --noconfirm -Syu && \
-    pacman --noconfirm -S git base-devel go vim sudo bash-completion && \
+    pacman --noconfirm -S \
+    git base-devel go \
+    vim sudo bash-completion \
+    wget curl zsh && \
     rm /var/cache/pacman/pkg/*
 
 # Create a non-root user for using yay safely
