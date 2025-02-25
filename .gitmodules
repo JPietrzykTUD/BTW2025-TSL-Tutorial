@@ -1,3 +1,4 @@
 [submodule "tslgen"]
 	path = tslgen
 	url = https://github.com/db-tu-dresden/TSL.git
+	branch = main
