@@ -12,6 +12,7 @@
           "ms-python.python",
           "ms-azuretools.vscode-docker",
           "microsoft.simple-browser",
+          "ms-vscode.cmake-tools",
           "DBTUD.tslgen-edit"
         ],
         "keybindings": [
