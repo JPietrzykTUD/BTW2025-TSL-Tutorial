@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <memory>
 #include <span>
+#include <bit>
 
 template <typename T>
 class column_t {
@@ -15,7 +16,7 @@ class column_t {
 
   public:
     explicit column_t(size_t element_count)
-    : _data{std::make_unique<T[]>(42)},
+    : _data{std::make_unique<T[]>(element_count)},
       _element_count(element_count) {}
   
   public:
@@ -24,19 +25,23 @@ class column_t {
   }
 
   [[nodiscard]] auto data() -> T* {
-      return _data.get();
+    return _data.get();
   }
 
   [[nodiscard]] auto size() const -> size_t {
-      return _element_count;
+    return _element_count;
   }
 
   [[nodiscard]] auto span() -> std::span<T> {
-      return { _data.get(), _element_count };
+    return { _data.get(), _element_count };
   }
 
   [[nodiscard]] auto span() const -> std::span<const T> {
-      return { _data.get(), _element_count };
+    return { _data.get(), _element_count };
   }
-  
+
+  [[nodiscard]] auto span_simd(unsigned values_per_iteration) -> std::span<const T> {
+    auto ld = std::bit_width(values_per_iteration) - 1;
+    return { _data.get(), ((_element_count >> ld)<<ld) };
+  }
 };
