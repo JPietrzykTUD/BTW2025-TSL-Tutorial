@@ -19,7 +19,7 @@ if (DEFINED GENERATE_TSL)
     TSLGENERATOR_DIRECTORY ${TSL_PATH}
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/tsl
   )
-  set(TSL_LINKAGE_REQUIRED TRUE)
+  set(SYSTEM_TSL FALSE)
 else()
   find_file(HAS_TSL_INSTALLED
     NAMES tsl.hpp
@@ -29,7 +29,8 @@ else()
   if (NOT HAS_TSL_INSTALLED)
     message(FATAL_ERROR "TSL is not installed in the system")
   endif()
-  set(TSL_LINKAGE_REQUIRED FALSE)
+  set(TSL_COMPILE_OPTIONS -Wno-ignored-attributes -Wno-attributes -Wdeprecated-declarations -flax-vector-conversions)
+  set(SYSTEM_TSL TRUE)
 endif()
 
 
@@ -46,9 +47,9 @@ function(create_target)
     CXX_STANDARD_REQUIRED ON
   )
   set_target_properties(${CT_TARGET_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/Debug
-    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin/Release
+    RUNTIME_OUTPUT_DIRECTORY ${BIN_ROOT}
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${BIN_ROOT}/Debug
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${BIN_ROOT}/Release
   )
   set_target_properties(${CT_TARGET_NAME} PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE
@@ -64,7 +65,9 @@ function(create_target)
   )
 
   target_link_options(${CT_TARGET_NAME} PRIVATE ${CT_LINK_OPTS})
-  if(TSL_LINKAGE_REQUIRED)
+  if(SYSTEM_TSL)
+    target_compile_options(${CT_TARGET_NAME} PRIVATE ${TSL_COMPILE_OPTIONS})
+  else()
     target_include_directories(${CT_TARGET_NAME} PRIVATE ${TSL_INCLUDE_DIRECTORY})
     target_link_libraries(${CT_TARGET_NAME} tsl ${CT_LIBS})
   endif()
