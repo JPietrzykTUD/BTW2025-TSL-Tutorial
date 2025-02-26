@@ -13,6 +13,7 @@
           "ms-azuretools.vscode-docker",
           "microsoft.simple-browser",
           "ms-vscode.cmake-tools",
+          "ms-vscode.cpptools-extension-pack",
           "DBTUD.tslgen-edit"
         ],
         "keybindings": [
