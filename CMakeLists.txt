@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(BTWTutorial)
 
+set(CMAKE_VERBOSE_MAKEFILE TRUE)
+
 include(CheckIncludeFile)
 
 set(BIN_ROOT ${PROJECT_SOURCE_DIR}/bin)
@@ -29,7 +31,7 @@ else()
   if (NOT HAS_TSL_INSTALLED)
     message(FATAL_ERROR "TSL is not installed in the system")
   endif()
-  set(TSL_COMPILE_OPTIONS -Wno-ignored-attributes -Wno-attributes -Wdeprecated-declarations -flax-vector-conversions)
+  set(TSL_COMPILE_OPTIONS -march=native -Wno-ignored-attributes -Wno-attributes -Wdeprecated-declarations -flax-vector-conversions)
   set(SYSTEM_TSL TRUE)
 endif()
 
@@ -43,7 +45,7 @@ function(create_target)
   endif()
   add_executable(${CT_TARGET_NAME} ${CT_SRCS})
   set_target_properties(${CT_TARGET_NAME} PROPERTIES 
-    CXX_STANDARD 20 
+    CXX_STANDARD 23 
     CXX_STANDARD_REQUIRED ON
   )
   set_target_properties(${CT_TARGET_NAME} PROPERTIES
@@ -77,6 +79,15 @@ if(NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the build type (Debug or Release)" FORCE)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release")
 endif()
+
+
+
+create_target(
+  TARGET_NAME hello_tsl
+  SRCS src/hello_tsl.cpp
+  INCLUDE_DIRS src
+)
+
 
 create_target(
   TARGET_NAME filter_agg

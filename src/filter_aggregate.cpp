@@ -1,17 +1,20 @@
 #include <iostream>
+#include <numeric>
+#include <algorithm>
 
-#include "tsl/tsl.hpp"
-#include "simd_utils.hpp"
+#include "column.hpp"
+#include "filter_aggregate.hpp"
 
 
 int main(void) {
-  std::cout << "Maximum degree of parallelism for "
-            << tsl::type_name<unsigned long long int>() << ": "
-            << simd_helper::max_par<unsigned long long int>() << " "
-            << "(" << tsl::type_name<simd_helper::target::max_width_extension_t>() << ")" << std::endl;
-  std::cout << "Minimum degree of parallelism for "
-            << tsl::type_name<unsigned long long int>() << ": "
-            << simd_helper::min_par<unsigned long long int>() << " "
-            << "(" << tsl::type_name<simd_helper::target::min_width_extension_t>() << ")" << std::endl;
+  column_t<int> to_filter(100);
+  column_t<int> to_aggregate(100);
+
+  std::iota(to_filter.span().begin(), to_filter.span().end(), 0);
+  std::fill(to_aggregate.span().begin(), to_aggregate.span().end(), 4);
+
+  auto result = filter_aggregate<int>(to_aggregate.span(), to_filter.span(), (int)50);
+
+  std::cout << "Result: " << result << ". (should be: " << 50*4 << ")" << std::endl;
   return 0;
 }

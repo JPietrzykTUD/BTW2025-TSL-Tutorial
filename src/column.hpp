@@ -40,8 +40,4 @@ class column_t {
     return { _data.get(), _element_count };
   }
 
-  [[nodiscard]] auto span_simd(unsigned values_per_iteration) -> std::span<const T> {
-    auto ld = std::bit_width(values_per_iteration) - 1;
-    return { _data.get(), ((_element_count >> ld)<<ld) };
-  }
 };
