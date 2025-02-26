@@ -7,13 +7,7 @@ set(BIN_ROOT ${PROJECT_SOURCE_DIR}/bin)
 set(CXX_FLAGS_DEBUG -O0 -g)
 set(CXX_FLAGS_RELEASE -O2)
 
-if (DEFINED USE_SYSTEM_TSL)
-  check_include_file("tsl/tsl.hpp" HAS_TSL_INSTALLED)
-  if (NOT HAS_TSL_INSTALLED)
-    message(FATAL_ERROR "TSL is not installed in the system")
-  endif()
-  set(TSL_LINKAGE_REQUIRED FALSE)
-else()
+if (DEFINED GENERATE_TSL)
   if (DEFINED LOCAL_TSL_PATH)
     set(TSL_PATH ${LOCAL_TSL_PATH})
   else()
@@ -23,9 +17,19 @@ else()
   create_tsl(
     USE_CONCEPTS
     TSLGENERATOR_DIRECTORY ${TSL_PATH}
-    DESTINATION ${BIN_ROOT}/tsl
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/tsl
   )
   set(TSL_LINKAGE_REQUIRED TRUE)
+else()
+  find_file(HAS_TSL_INSTALLED
+    NAMES tsl.hpp
+    PATHS /usr/include/tsl
+    NO_DEFAULT_PATH  # Prevents searching in default locations
+  )
+  if (NOT HAS_TSL_INSTALLED)
+    message(FATAL_ERROR "TSL is not installed in the system")
+  endif()
+  set(TSL_LINKAGE_REQUIRED FALSE)
 endif()
 
 
