@@ -13,45 +13,31 @@
 #include "simd_utils.hpp"
 
 template <unsigned SimdPar, typename FilterColumnT, typename AggregateColumnT = FilterColumnT>
-auto filter_aggregate_impl(std::span<const AggregateColumnT> to_agg, std::span<const FilterColumnT> to_filter, FilterColumnT const filter_value) -> AggregateColumnT
-{
-  if (to_agg.size() != to_filter.size())
-  {
+auto filter_aggregate_impl(
+  std::span<const AggregateColumnT> to_agg, 
+  std::span<const FilterColumnT> to_filter, 
+  FilterColumnT const filter_value
+) -> AggregateColumnT {
+  if (to_agg.size() != to_filter.size()) {
     throw std::runtime_error("Size mismatch");
   }
 
-  using FilterProcStyle = tsl::simd_ext<FilterColumnT, SimdPar>;
-  using AggProcStyle = tsl::simd_ext<AggregateColumnT, SimdPar>;
-  std::cout << "Executing filter_aggregate_impl (Filter) with " << tsl::type_name<FilterProcStyle>() << std::endl;
-  std::cout << "Executing filter_aggregate_impl (Aggregate) with " << tsl::type_name<AggProcStyle>() << std::endl;
-
   /* initializing */
-  auto result = tsl::set_zero<AggProcStyle>();
-  auto filter_val = tsl::set1<FilterProcStyle>(filter_value);
 
-  for (auto i = 0; i < to_filter.size(); i += SimdPar)
-  {
+
+  for (auto i = 0; i < to_filter.size(); i += SimdPar) {
     /* load filter data */
-    auto const filter_data = tsl::loadu<FilterProcStyle>(&to_filter[i]);
-    /* compare filter data */
-    auto const valid = tsl::greater_than_or_equal<FilterProcStyle>(filter_data, filter_val);
+    
+    /* compare filter data --> return type is a mask (NEON/SSE/AVX: register, AVX512/SVE: integral value)*/
+    
     /* load aggregation data */
-    auto const aggregate = tsl::loadu<AggProcStyle>(&to_agg[i]);
-
+    
     /* add valid values to result */
-    if constexpr(
-      (sizeof(FilterColumnT) == sizeof(AggregateColumnT)) 
-      ||
-      (std::is_same_v<decltype(valid),typename FilterProcStyle::imask_type>)
-    ) {
-      result = tsl::add<AggProcStyle>(valid, result, aggregate);
-    } else {
-      result = tsl::add<AggProcStyle>(tsl::to_integral<FilterProcStyle>(valid), result, aggregate);
-    }
+
     
   }
   /* sum up all partial results */
-  return tsl::hadd<AggProcStyle>(result);
+  return 0;
 }
 
 template <typename FilterColumnT, typename AggregateColumnT, unsigned SimdPar = simd_helper::max_par<FilterColumnT>()>

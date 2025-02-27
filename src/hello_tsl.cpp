@@ -1,5 +1,4 @@
 #include <iostream>
-#include <format>
 #include <ranges>
 #include <cstdint>
 #include <tuple>

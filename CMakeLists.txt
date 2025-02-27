@@ -9,6 +9,12 @@ set(BIN_ROOT ${PROJECT_SOURCE_DIR}/bin)
 set(CXX_FLAGS_DEBUG -O0 -g)
 set(CXX_FLAGS_RELEASE -O2)
 
+if (DEFINED PREPARED_FILES)
+  set(COMPILE_DEFINITIONS )
+else()
+  set(COMPILE_DEFINITIONS LIVE_SESSION)
+endif()
+
 if (DEFINED GENERATE_TSL)
   if (DEFINED LOCAL_TSL_PATH)
     set(TSL_PATH ${LOCAL_TSL_PATH})
@@ -58,7 +64,7 @@ function(create_target)
   )
   
   target_include_directories(${CT_TARGET_NAME} PRIVATE ${CT_INCLUDE_DIRS})
-  target_compile_definitions(${CT_TARGET_NAME} PRIVATE ${CT_COMPILE_DEFS})
+  target_compile_definitions(${CT_TARGET_NAME} PRIVATE ${CT_COMPILE_DEFS} ${COMPILE_DEFINITIONS})
   target_compile_options(
     ${CT_TARGET_NAME} PRIVATE 
       ${CT_COMPILE_OPTS} 
@@ -70,7 +76,7 @@ function(create_target)
   if(SYSTEM_TSL)
     target_compile_options(${CT_TARGET_NAME} PRIVATE ${TSL_COMPILE_OPTIONS})
   else()
-    target_include_directories(${CT_TARGET_NAME} PRIVATE ${TSL_INCLUDE_DIRECTORY})
+    target_include_directories(${CT_TARGET_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
     target_link_libraries(${CT_TARGET_NAME} tsl ${CT_LIBS})
   endif()
 endfunction()
