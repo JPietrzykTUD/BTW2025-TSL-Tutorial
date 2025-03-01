@@ -40,4 +40,12 @@ class column_t {
     return { _data.get(), _element_count };
   }
 
+  [[nodiscard]] auto operator[](size_t index) -> T& {
+    return _data[index];
+  }
+
+  [[nodiscard]] auto operator[](size_t index) const -> const T& {
+    return _data[index];
+  }
+
 };
