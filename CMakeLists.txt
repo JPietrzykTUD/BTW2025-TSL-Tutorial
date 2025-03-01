@@ -38,7 +38,7 @@ else()
   )
   if (NOT HAS_TSL_INSTALLED)
     execute_process(
-      COMMAND bash "-c" "curl -L -s \"https://github.com/db-tu-dresden/TSL/releases/latest/download/setup_tsl.sh\" | /bin/bash -s -- --local ${CMAKE_CURRENT_BINARY_DIR}/tsl"
+      COMMAND bash "-c" "curl -L -s \"https://github.com/db-tu-dresden/TSL/releases/latest/download/setup_tsl.sh\" | /bin/bash -s -- --local ${CMAKE_CURRENT_BINARY_DIR}"
       RESULT_VARIABLE TSL_INSTALL_RESULT
       ERROR_VARIABLE TSL_INSTALL_ERROR
     )
