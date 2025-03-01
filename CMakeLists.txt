@@ -5,6 +5,8 @@ set(CMAKE_VERBOSE_MAKEFILE TRUE)
 
 include(CheckIncludeFile)
 
+set(PREPARED_FILES TRUE)
+
 set(BIN_ROOT ${PROJECT_SOURCE_DIR}/bin)
 set(CXX_FLAGS_DEBUG -O0 -g)
 set(CXX_FLAGS_RELEASE -O2)
@@ -81,10 +83,12 @@ function(create_target)
   endif()
 endfunction()
 
-if(NOT CMAKE_CONFIGURATION_TYPES)
-  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the build type (Debug or Release)" FORCE)
+if(NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT DEFINED CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the build type (Debug or Release)" FORCE)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release")
 endif()
+
+message(STATUS "Configured Build Type: ${CMAKE_BUILD_TYPE}")
 
 
 

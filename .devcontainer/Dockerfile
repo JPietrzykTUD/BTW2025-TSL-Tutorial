@@ -8,7 +8,7 @@ RUN pacman --noconfirm -Syu && \
     lsb-release zip file \
     cmake make ninja \
     python python-pip python-virtualenv \
-    clang gcc \
+    clang gcc gdb \
     aarch64-linux-gnu-gcc aarch64-linux-gnu-binutils \
     qemu-user qemu-user-static && \
     rm /var/cache/pacman/pkg/*

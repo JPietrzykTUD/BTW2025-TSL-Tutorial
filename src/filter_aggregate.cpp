@@ -12,7 +12,7 @@
 
 int main(void) {
   using FilterColumnT = int;
-  using AggregateColumT = int16_t;
+  using AggregateColumT = uint8_t;
   
   column_t<FilterColumnT>   to_filter(100);
   column_t<AggregateColumT> to_aggregate(100);
@@ -25,6 +25,6 @@ int main(void) {
   /* Accumulate all values from to_aggregate, if the corresponding element in to_filter is greater or equal to 50. */
   auto result = filter_aggregate<FilterColumnT,AggregateColumT>(to_aggregate.span(), to_filter.span(), (int)50);
 // 
-  std::cout << "Result: " << result << ". (should be: " << 50*4 << ")" << std::endl;
+  std::cout << "Result: " << +result << ". (should be: " << 50*4 << ")" << std::endl;
   return 0;
 }
