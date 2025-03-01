@@ -37,10 +37,18 @@ else()
     NO_DEFAULT_PATH  # Prevents searching in default locations
   )
   if (NOT HAS_TSL_INSTALLED)
-    message(FATAL_ERROR "TSL is not installed in the system")
+    execute_process(
+      COMMAND curl -L -s "https://github.com/db-tu-dresden/TSL/releases/latest/download/setup_tsl.sh" | /bin/bash -s -- --local ${CMAKE_CURRENT_BINARY_DIR}/tsl
+      RESULT_VARIABLE TSL_INSTALL_RESULT
+      ERROR_VARIABLE TSL_INSTALL_ERROR
+    )
+    if (NOT TSL_INSTALL_RESULT EQUAL 0)
+      message(FATAL_ERROR "Failed to install TSL: ${TSL_INSTALL_ERROR}")
+    endif()
+  else ()
+    set(SYSTEM_TSL TRUE)
   endif()
   set(TSL_COMPILE_OPTIONS -march=native -Wno-ignored-attributes -Wno-attributes -Wdeprecated-declarations -flax-vector-conversions)
-  set(SYSTEM_TSL TRUE)
 endif()
 
 
