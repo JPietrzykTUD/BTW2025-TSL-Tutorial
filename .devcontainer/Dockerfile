@@ -41,6 +41,6 @@ RUN git clone https://aur.archlinux.org/yay-bin.git /home/dev/yay-bin && \
 ENV PATH="/home/dev/.local/bin:$PATH"
 
 # Install an AUR package globally
-RUN yay -Sy --noconfirm intel-sde
+RUN yay -Sy --noconfirm intel-sde oh-my-zsh-git
 
 WORKDIR /home/dev/
