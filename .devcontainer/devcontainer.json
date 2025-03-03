@@ -14,6 +14,7 @@
           "microsoft.simple-browser",
           "ms-vscode.cmake-tools",
           "ms-vscode.cpptools-extension-pack",
+          "ms-kubernetes-tools.vscode-kubernetes-tools",
           "DBTUD.tslgen-edit"
         ],
         "keybindings": [
