@@ -9,7 +9,7 @@ RUN pacman --noconfirm -Syu && \
     cmake make ninja \
     python python-pip python-virtualenv \
     clang gcc gdb \
-    aarch64-linux-gnu-gcc aarch64-linux-gnu-binutils \
+    aarch64-linux-gnu-gcc aarch64-linux-gnu-binutils docker kubectl minikube helm\
     qemu-user qemu-user-static && \
     rm /var/cache/pacman/pkg/*
 
